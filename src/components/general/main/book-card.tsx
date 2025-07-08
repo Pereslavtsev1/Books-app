@@ -7,7 +7,7 @@ import type { BookVolume } from '@/utils/types';
 
 const BookCard = ({ book }: { book: BookVolume }) => {
   return (
-    <div className='relative flex gap-4 rounded-xl bg-card p-5 border'>
+    <div className='relative flex gap-4 rounded-xl p-5 border'>
       <Button
         variant='ghost'
         size='icon'

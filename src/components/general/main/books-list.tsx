@@ -1,12 +1,15 @@
 'use client';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getBooks } from '@/api/queries';
+import { useSearch } from '@/hooks/useSearch';
 import type { BookVolume } from '@/utils/types';
 import BookCard from './book-card';
 
 const BooksList = () => {
-  const { data } = useSuspenseQuery<BookVolume[]>(getBooks);
-  console.log(data);
+  const { search } = useSearch();
+  const { data } = useSuspenseQuery<BookVolume[]>(
+    getBooks({ query: search || 'Javascript' }),
+  );
   return (
     <div className='grid grid-cols-1 gap-x-6 gap-y-3 md:grid-cols-2 xl:grid-cols-4'>
       {data.map((book) => (

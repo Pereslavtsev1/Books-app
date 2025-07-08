@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import ReactQueryProvider from '@/components/providers/react-query-provider';
+import { SearchProvider } from '@/components/providers/search-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 
 const geistSans = Geist({
@@ -27,18 +28,20 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <ReactQueryProvider>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} px-2 antialiased sm:px-4 md:px-6 lg:px-8`}
-        >
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange
+        <SearchProvider>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
-            {children}
-          </ThemeProvider>
-        </body>
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='system'
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </body>
+        </SearchProvider>
       </ReactQueryProvider>
     </html>
   );
