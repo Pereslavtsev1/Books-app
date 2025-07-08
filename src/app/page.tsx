@@ -12,7 +12,9 @@ export default async function Home() {
   return (
     <main className='px-2 sm:px-4 md:px-6 lg:px-8'>
       <Header />
-      <SearchBar />
+      <div className='w-full'>
+        <SearchBar />
+      </div>
       <BooksList />
     </main>
   );

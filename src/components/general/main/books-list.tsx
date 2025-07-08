@@ -6,9 +6,9 @@ import type { BookVolume } from '@/utils/types';
 import BookCard from './book-card';
 
 const BooksList = () => {
-  const { search } = useSearch();
+  const { search, filter } = useSearch();
   const { data } = useSuspenseQuery<BookVolume[]>(
-    getBooks({ query: search || 'Javascript' }),
+    getBooks({ query: search || 'Javascript', filter: filter }),
   );
   return (
     <div className='grid grid-cols-1 gap-x-6 gap-y-3 md:grid-cols-2 xl:grid-cols-4'>

@@ -14,7 +14,11 @@ import { useSearch } from '@/hooks/useSearch';
 
 const SearchBar = () => {
   const filters = ['ebooks', 'free-ebooks', 'full', 'paid-ebooks', 'partial'];
-  const { search: contextSearch, setSearch: setContextSearch } = useSearch();
+  const {
+    search: contextSearch,
+    setSearch: setContextSearch,
+    setFilter,
+  } = useSearch();
   const [inputValue, setInputValue] = useState(contextSearch);
   const debouncedSearchTerm = useDebounce(inputValue, 500);
   useEffect(() => {
@@ -24,12 +28,12 @@ const SearchBar = () => {
   }, [debouncedSearchTerm, setContextSearch, contextSearch]);
 
   return (
-    <div className='flex items-center gap-x-2 py-6'>
-      <div className='relative'>
+    <div className='flex w-full items-center gap-x-2 py-6'>
+      <div className='relative w-full'>
         <Search className='absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-muted-foreground' />
         <Input
           placeholder='Search...'
-          className='h-11 px-10 font-medium'
+          className='h-11 w-full px-10'
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           variant='ghost'
@@ -48,7 +52,12 @@ const SearchBar = () => {
         >
           <div className='space-y-2'>
             {filters.map((f) => (
-              <Button key={f} variant='ghost' className='w-full justify-start'>
+              <Button
+                key={f}
+                variant='ghost'
+                className='w-full justify-start'
+                onClick={() => setFilter(f)}
+              >
                 {f}
               </Button>
             ))}
