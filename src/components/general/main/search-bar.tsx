@@ -33,7 +33,7 @@ const SearchBar = () => {
         <Search className='absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-muted-foreground' />
         <Input
           placeholder='Search...'
-          className='h-11 w-full px-10'
+          className='h-11 w-full px-10 font-semibold text-muted-foreground'
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           variant='ghost'

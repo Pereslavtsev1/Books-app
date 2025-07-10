@@ -1,19 +1,42 @@
 import { Heart, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useFavorites } from '@/hooks/useFavorites';
+import { cn } from '@/lib/utils';
 import type { BookVolume } from '@/utils/types';
 
 const BookCard = ({ book }: { book: BookVolume }) => {
+  const { favorites, setFavorites } = useFavorites();
+  const isFavorite = favorites.some((fav) => fav.id === book.id);
+
+  const toggleFavorite = () => {
+    if (isFavorite) {
+      setFavorites(favorites.filter((fav) => fav.id !== book.id));
+      toast.success('Book removed from favorites successfully');
+    } else {
+      setFavorites([...favorites, book]);
+      toast.success('Book added to favorites successfully');
+    }
+  };
+  console.log(favorites);
   return (
-    <div className='relative flex gap-4 rounded-xl p-5 border'>
+    <div className='relative flex gap-4 rounded-xl border p-5'>
       <Button
         variant='ghost'
         size='icon'
-        className='absolute top-3 right-3 size-8 rounded-full bg-background/80 opacity-75 transition-all duration-300 hover:scale-105 hover:opacity-100'
+        className='absolute top-3 right-3 size-8 rounded-full'
+        onClick={toggleFavorite}
       >
-        <Heart className='size-4' />
+        <Heart
+          className={cn(
+            'size-4 transition-all duration-300',
+            isFavorite ? 'fill-white opacity-100' : '',
+          )}
+        />
       </Button>
 
       <div className='relative h-48 w-32 flex-shrink-0'>
@@ -44,9 +67,7 @@ const BookCard = ({ book }: { book: BookVolume }) => {
           </h3>
           {book.volumeInfo.authors && (
             <div className='flex items-center gap-x-2'>
-              <div className='flex size-5 items-center justify-center rounded-full bg-primary/10'>
-                <User className='size-3 text-primary' />
-              </div>
+              <User className='size-3.5 text-muted-foreground' />
               <p className='line-clamp-1 text-sm font-medium text-muted-foreground'>
                 {book.volumeInfo.authors.join(', ')}
               </p>
@@ -62,7 +83,9 @@ const BookCard = ({ book }: { book: BookVolume }) => {
                     variant='secondary'
                     className='bg-primary/10 text-xs font-medium text-primary transition-colors duration-200 hover:bg-primary/20'
                   >
-                    {category}
+                    <p className='max-w-32 overflow-hidden text-nowrap text-ellipsis'>
+                      {category}
+                    </p>
                   </Badge>
                 ))}
                 {book.volumeInfo.categories.length > 3 && (
@@ -89,5 +112,7 @@ const BookCard = ({ book }: { book: BookVolume }) => {
     </div>
   );
 };
-
+export const BookCardSkeleton = () => {
+  return <Skeleton className='relative h-48 w-32 flex-shrink-0'></Skeleton>;
+};
 export default BookCard;
