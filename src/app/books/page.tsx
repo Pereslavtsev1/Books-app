@@ -6,7 +6,7 @@ import { getQueryClient } from '@/utils/functions';
 export default async function Home({
   searchParams,
 }: {
-  searchParams: { search?: string };
+  searchParams: Promise<{ search?: string }>;
 }) {
   const { search } = await searchParams;
   const queryClient = getQueryClient();
