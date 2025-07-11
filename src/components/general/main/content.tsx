@@ -50,7 +50,7 @@ export default function CatalogPageContent() {
             />
           ))}
       </div>
-      <div ref={ref} />
+      <div ref={ref} className='h-10' />
     </>
   );
 }
