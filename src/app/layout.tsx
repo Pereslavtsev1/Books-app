@@ -29,12 +29,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <ReactQueryProvider>
-        <FavoritesProvider>
-          <SearchProvider>
-            <body
-              className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-            >
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <ReactQueryProvider>
+          <FavoritesProvider>
+            <SearchProvider>
               <ThemeProvider
                 attribute='class'
                 defaultTheme='system'
@@ -44,10 +44,10 @@ export default function RootLayout({
                 {children}
                 <Toaster />
               </ThemeProvider>
-            </body>
-          </SearchProvider>
-        </FavoritesProvider>
-      </ReactQueryProvider>
+            </SearchProvider>
+          </FavoritesProvider>
+        </ReactQueryProvider>
+      </body>
     </html>
   );
 }

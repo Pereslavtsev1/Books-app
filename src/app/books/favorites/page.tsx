@@ -4,11 +4,7 @@ import { useFavorites } from '@/hooks/useFavorites';
 
 const FavoritesPage = () => {
   const { favorites } = useFavorites();
-  return (
-    <div>
-      <BooksList books={favorites} />
-    </div>
-  );
+  return <BooksList books={favorites} />;
 };
 
 export default FavoritesPage;

@@ -1,22 +1,43 @@
-import { queryOptions } from '@tanstack/react-query';
-import type { BookVolume } from '@/utils/types';
+import { infiniteQueryOptions } from '@tanstack/react-query';
+import type { BooksApiResponse } from '@/utils/types';
 
-type GetBooksProps = {
+export const getBooks = async ({
+  query,
+  limit = 10,
+  pageParam = 0,
+  filter,
+}: {
   query: string;
+  limit?: number;
+  pageParam?: unknown;
   filter?: string;
+}) => {
+  let url = `https://www.googleapis.com/books/v1/volumes?q=${query}&startIndex=${pageParam}&maxResults=${limit}`;
+  if (filter) {
+    url += `&filter=${encodeURIComponent(filter)}`;
+  }
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch books');
+  }
+  return response.json();
 };
 
-export const getBooks = ({ query, filter }: GetBooksProps) =>
-  queryOptions<BookVolume[]>({
+export const booksOptions = ({
+  limit = 10,
+  query,
+  filter,
+}: {
+  query: string;
+  limit?: number;
+  filter?: string;
+}) =>
+  infiniteQueryOptions<BooksApiResponse>({
     queryKey: ['books', query, filter],
-    queryFn: async () => {
-      let url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}`;
-
-      if (filter) {
-        url += `&filter=${encodeURIComponent(filter)}`;
-      }
-      const response = await fetch(url);
-      const data = await response.json();
-      return data.items;
+    queryFn: ({ pageParam }) => getBooks({ query, limit, pageParam, filter }),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.items.length === limit ? allPages.length + 1 : undefined;
     },
+    initialPageParam: 0,
   });

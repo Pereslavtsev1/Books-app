@@ -10,7 +10,7 @@ type SearchStore = {
 
 export const SearchContext = createContext<SearchStore | undefined>(undefined);
 export const SearchProvider = ({ children }: { children: ReactNode }) => {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState<string>('javascipt');
   const [filter, setFilter] = useState('');
   const value = {
     search,

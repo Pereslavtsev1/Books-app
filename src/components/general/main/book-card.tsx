@@ -22,7 +22,6 @@ const BookCard = ({ book }: { book: BookVolume }) => {
       toast.success('Book added to favorites successfully');
     }
   };
-  console.log(favorites);
   return (
     <div className='relative flex gap-4 rounded-xl border p-5'>
       <Button
@@ -34,30 +33,26 @@ const BookCard = ({ book }: { book: BookVolume }) => {
         <Heart
           className={cn(
             'size-4 transition-all duration-300',
-            isFavorite ? 'fill-white opacity-100' : '',
+            isFavorite ? 'fill-foreground opacity-100' : '',
           )}
         />
       </Button>
 
       <div className='relative h-48 w-32 flex-shrink-0'>
-        {book.volumeInfo.imageLinks?.thumbnail ? (
-          <div className='relative h-full w-full overflow-hidden rounded-lg shadow-md'>
+        <div className='relative h-full w-full overflow-hidden rounded-lg shadow-md'>
+          {book.volumeInfo.imageLinks?.thumbnail ? (
             <Image
               src={book.volumeInfo.imageLinks.thumbnail}
               alt={book.volumeInfo.title}
               fill
               className='object-cover'
             />
-          </div>
-        ) : (
-          <div className='flex h-full w-full items-center justify-center rounded-lg text-muted-foreground'>
-            <div className='text-center text-xs font-medium'>
-              Нет
-              <br />
-              обложки
+          ) : (
+            <div className='flex h-full w-full items-center justify-center'>
+              <p className='text-sm text-muted-foreground'>No image</p>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       <div className='flex min-w-0 flex-1 flex-col'>
@@ -113,6 +108,6 @@ const BookCard = ({ book }: { book: BookVolume }) => {
   );
 };
 export const BookCardSkeleton = () => {
-  return <Skeleton className='relative h-48 w-32 flex-shrink-0'></Skeleton>;
+  return <Skeleton className='relative h-64 w-full' />;
 };
 export default BookCard;

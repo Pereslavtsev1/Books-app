@@ -20,7 +20,7 @@ export type BookVolume = {
     pageCount: number;
     printType: string;
     categories: string[];
-    averageRating: number | null; // Average rating can be null if not available
+    averageRating: number | null;
     ratingsCount: number;
     maturityRating: string;
     allowAnonLogging: boolean;
@@ -31,7 +31,7 @@ export type BookVolume = {
     };
     imageLinks: {
       smallThumbnail: string;
-      thumbnail: string;
+      thumbnail?: string;
     };
     language: string;
     previewLink: string;
@@ -81,6 +81,11 @@ export type BookVolume = {
     quoteSharingAllowed: boolean;
   };
   searchInfo?: {
-    textSnippet: string; // Optional, as not all volumes may have this
+    textSnippet: string;
   };
+};
+export type BooksApiResponse = {
+  kind: string;
+  items: BookVolume[];
+  totalItems: number;
 };

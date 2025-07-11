@@ -1,22 +1,23 @@
-'use client';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { getBooks } from '@/api/queries';
-import BooksList from '@/components/general/main/books-list';
-import SearchBar from '@/components/general/main/search-bar';
-import { useSearch } from '@/hooks/useSearch';
-import type { BookVolume } from '@/utils/types';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { booksOptions } from '@/api/queries';
+import CatalogPageContent from '@/components/general/main/content';
+import { getQueryClient } from '@/utils/functions';
 
-export default function Home() {
-  const { search, filter } = useSearch();
-  const { data } = useSuspenseQuery<BookVolume[]>(
-    getBooks({ query: search || 'Javascript', filter: filter }),
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { search?: string };
+}) {
+  const { search } = await searchParams;
+  const queryClient = getQueryClient();
+  await queryClient.prefetchInfiniteQuery(
+    booksOptions({ query: search || 'javascript' }),
   );
+
+  console.log(dehydrate(queryClient));
   return (
-    <>
-      <div className='w-full'>
-        <SearchBar />
-      </div>
-      <BooksList books={data} />
-    </>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <CatalogPageContent />
+    </HydrationBoundary>
   );
 }
